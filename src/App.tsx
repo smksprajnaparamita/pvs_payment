@@ -203,7 +203,7 @@ export default function App() {
     // 4. Get cached defined fees or fall back
     const cachedBiaya = localStorage.getItem("KAS_SEKOLAH_BIAYA");
     let initialBiaya: BiayaSekolah[] = [
-      { id: "biaya-1", nama: "Iuran SPP Bulanan SMA Kelas X", kategori: "SPP", jumlah: 350000, tenggatWaktu: "2026-06-10" },
+      { id: "biaya-1", nama: "Iuran BKJ Bulanan SMA Kelas X", kategori: "BKJ", jumlah: 350000, tenggatWaktu: "2026-06-10" },
       { id: "biaya-2", nama: "Sumbangan Sarana Prasana (Uang Gedung)", kategori: "Uang Gedung", jumlah: 1500000, tenggatWaktu: "2026-06-30" },
       { id: "biaya-3", nama: "Pengadaan Seragam Olahraga & Almamater", kategori: "Seragam", jumlah: 650000, tenggatWaktu: "2026-06-15" },
       { id: "biaya-4", nama: "Iuran Kegiatan Study Tour Mandiri", kategori: "Kegiatan", jumlah: 200000, tenggatWaktu: "2026-06-25" }
@@ -571,7 +571,7 @@ export default function App() {
       if (s.id === newTransaction.siswaId) {
         const nextStatus = { ...s.statusSpp };
         // Lookup standard SPP tariff from biayaList (Manajemen Biaya)
-        const sppBiayaItems = biayaList.filter(b => b.kategori === 'SPP');
+        const sppBiayaItems = biayaList.filter(b => b.kategori === 'BKJ');
         const sppTarif = sppBiayaItems.length > 0 ? sppBiayaItems[0].jumlah : s.tagihanSpp;
 
         if (newTransaction.jenisPembayaran === "SPP" && newTransaction.bulanCovered) {
@@ -581,7 +581,7 @@ export default function App() {
               // Calculate total paid for this specific month from entire history, including this transaction
               const trxsForMonth = updatedTrx.filter(t => 
                 t.siswaId === s.id && 
-                t.jenisPembayaran === "SPP" && 
+                t.jenisPembayaran === "BKJ" && 
                 t.bulanCovered && 
                 t.bulanCovered.split(",").map(x => x.trim()).includes(trimmed)
               );
@@ -648,14 +648,14 @@ export default function App() {
         const sppBiayaItems = biayaList.filter(b => b.kategori === 'SPP');
         const sppTarif = sppBiayaItems.length > 0 ? sppBiayaItems[0].jumlah : s.tagihanSpp;
 
-        if (trxToDelete.jenisPembayaran === "SPP" && trxToDelete.bulanCovered) {
+        if (trxToDelete.jenisPembayaran === "BKJ" && trxToDelete.bulanCovered) {
           trxToDelete.bulanCovered.split(",").forEach((m) => {
             const trimmed = m.trim();
             if (trimmed) {
               // Calculate total paid for this specific month from entire remaining history
               const trxsForMonth = updatedTrx.filter(t => 
                 t.siswaId === s.id && 
-                t.jenisPembayaran === "SPP" && 
+                t.jenisPembayaran === "BKJ" && 
                 t.bulanCovered && 
                 t.bulanCovered.split(",").map(x => x.trim()).includes(trimmed)
               );
