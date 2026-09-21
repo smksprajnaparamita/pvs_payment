@@ -61,7 +61,7 @@ export default function PaymentView({
 
   // Helper to dynamically look up the standard SPP rate from Manajemen Biaya (biayaList)
   const getSppTarifFromBiayaList = (): number => {
-    const sppBiayaItems = biayaList.filter(b => b.kategori === 'SPP');
+    const sppBiayaItems = biayaList.filter(b => b.kategori === 'BKJ');
     if (sppBiayaItems.length > 0) {
       return sppBiayaItems[0].jumlah;
     }
@@ -150,7 +150,7 @@ export default function PaymentView({
   const totalTunggakan = tunggakanList.reduce((sum, item) => sum + item.sisa, 0);
 
   // Find currently selected months from the comma-separated string in state
-  const selectedMonthsList = (jenisPembayaran === "SPP" && bulanCovered) 
+  const selectedMonthsList = (jenisPembayaran === "BKJ" && bulanCovered) 
     ? bulanCovered.split(",").filter(Boolean) 
     : [];
 
@@ -159,7 +159,7 @@ export default function PaymentView({
     if (selectedSiswa) {
       const sSpp = selectedSiswa.statusSpp || {};
       const sppTarif = getSppTarifFromBiayaList();
-      if (jenisPembayaran === "SPP") {
+      if (jenisPembayaran === "BKJ") {
         // Find first unpaid month as default selection (checking from the dynamic months first)
         let unpaidMonth = getMonthsForAcademicYear(selectedTahunPelajaran).find(m => sSpp[m.key] !== "Lunas");
         if (!unpaidMonth) {
@@ -170,7 +170,7 @@ export default function PaymentView({
           const unpaidTP = getAcademicYearFromCalendarKey(unpaidMonth.key);
           setSelectedTahunPelajaran(unpaidTP);
           setBulanCovered(unpaidMonth.key);
-          setKeterangan(`Pembayaran SPP Bulan ${unpaidMonth.label} (Th Pelajaran ${unpaidTP})`);
+          setKeterangan(`Pembayaran BKJ Bulan ${unpaidMonth.label} (Th Pelajaran ${unpaidTP})`);
           
           const statusVal = String(sSpp[unpaidMonth.key] || "Belum_Bayar");
           if (statusVal.startsWith("Kurang:")) {
@@ -232,7 +232,7 @@ export default function PaymentView({
   // Handle auto-selected target months from grid clicks (supports multi-month aggregation)
   const handleSelectMonthGrid = (monthKey: string) => {
     if (!selectedSiswa) return;
-    setJenisPembayaran("SPP");
+    setJenisPembayaran("BKJ");
     
     let nextList: string[];
     if (selectedMonthsList.includes(monthKey)) {
@@ -269,11 +269,11 @@ export default function PaymentView({
       setKeterangan("");
     } else if (nextList.length === 1) {
       const mLabel = tpMonths.find(d => d.key === nextList[0])?.label || "";
-      setKeterangan(`Pembayaran SPP Bulan ${mLabel} (Th Pelajaran ${selectedTahunPelajaran})`);
+      setKeterangan(`Pembayaran BKJ Bulan ${mLabel} (Th Pelajaran ${selectedTahunPelajaran})`);
     } else {
       const labels = nextList.map(k => tpMonths.find(d => d.key === k)?.label.split(" ")[0] || "").join(", ");
       const years = Array.from(new Set(nextList.map(k => k.split("-")[0])));
-      setKeterangan(`Pembayaran SPP Gabungan ${nextList.length} Bulan (${labels}) Th Pelajaran ${selectedTahunPelajaran}`);
+      setKeterangan(`Pembayaran BKJ Gabungan ${nextList.length} Bulan (${labels}) Th Pelajaran ${selectedTahunPelajaran}`);
     }
   };
 
@@ -663,7 +663,7 @@ export default function PaymentView({
                           setBulanCovered(nextVal);
                           
                           const mName = NAMA_BULAN.find(nb => nb.key === currentMonth)?.label || "";
-                          setKeterangan(`Pembayaran SPP Bulan ${mName} (Th Pelajaran ${tp})`);
+                          setKeterangan(`Pembayaran BKJ Bulan ${mName} (Th Pelajaran ${tp})`);
                           
                           const sppTarif = getSppTarifFromBiayaList();
                           const sSpp = selectedSiswa ? (selectedSiswa.statusSpp || {}) : {};
