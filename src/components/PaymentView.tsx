@@ -70,7 +70,7 @@ export default function PaymentView({
   };
 
   // Form Fields
-  const [jenisPembayaran, setJenisPembayaran] = useState<'SPP' | 'Uang Gedung' | 'Seragam' | 'Kegiatan' | 'Lainnya'>('SPP');
+  const [jenisPembayaran, setJenisPembayaran] = useState<'BKJ' | 'Uang Gedung' | 'Seragam' | 'Kegiatan' | 'Lainnya'>('BKJ');
   const [selectedBiayaId, setSelectedBiayaId] = useState<string>("");
   const [bulanCovered, setBulanCovered] = useState(() => {
     const today = new Date();
@@ -348,7 +348,7 @@ export default function PaymentView({
       siswaKelas: selectedSiswa.kelas,
       tanggal: new Date().toISOString().replace('T', ' ').substring(0, 19),
       jenisPembayaran: jenisPembayaran,
-      bulanCovered: jenisPembayaran === "SPP" ? bulanCovered : undefined,
+      bulanCovered: jenisPembayaran === "BKJ" ? bulanCovered : undefined,
       jumlah: actualPaid,
       metode: metode,
       keterangan: keterangan,
@@ -479,13 +479,13 @@ export default function PaymentView({
                       key={m.key}
                       type="button"
                       onClick={() => !isPaid && handleSelectMonthGrid(m.key)}
-                      title={isPartial ? `Kurang bayar SPP: ${formatRupiah(sisaAmount)}` : undefined}
+                      title={isPartial ? `Kurang bayar BKJ: ${formatRupiah(sisaAmount)}` : undefined}
                       className={`p-2.5 rounded-xl border flex flex-col justify-between h-14 text-left transition-all cursor-pointer ${
                         isPaid 
                           ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/15 text-emerald-400 cursor-default" 
                           : isPartial
                             ? "bg-amber-505/10 border-amber-500/30 hover:bg-amber-550/15 text-amber-400"
-                            : selectedMonthsList.includes(m.key) && jenisPembayaran === "SPP"
+                            : selectedMonthsList.includes(m.key) && jenisPembayaran === "BKJ"
                               ? "bg-blue-500 border-blue-400/30 font-semibold text-white shadow-md shadow-blue-500/20" 
                               : "bg-white/5 border-white/10 hover:border-blue-500/30 hover:bg-white/10 text-slate-300"
                       }`}
@@ -495,7 +495,7 @@ export default function PaymentView({
                           ? "text-emerald-400" 
                           : isPartial
                             ? "text-amber-400"
-                            : selectedMonthsList.includes(m.key) && jenisPembayaran === "SPP" 
+                            : selectedMonthsList.includes(m.key) && jenisPembayaran === "BKJ" 
                               ? "text-blue-200" 
                               : "text-slate-400"
                       }`}>
@@ -509,7 +509,7 @@ export default function PaymentView({
                           <Check className="size-3 text-emerald-400" strokeWidth={3} />
                         ) : isPartial ? (
                           <span className="text-[9px] font-mono font-bold text-amber-400">-{Math.round(sisaAmount/1000)}Rb</span>
-                        ) : selectedMonthsList.includes(m.key) && jenisPembayaran === "SPP" ? (
+                        ) : selectedMonthsList.includes(m.key) && jenisPembayaran === "BKJ" ? (
                           <span className="size-1.5 rounded-full bg-white"></span>
                         ) : (
                           <span className="size-1.5 rounded-full bg-red-400"></span>
@@ -523,7 +523,7 @@ export default function PaymentView({
               {/* Standard Tagihan List */}
               <div className="border-t border-white/5 pt-4 space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">Tarif SPP Bulanan (Manajemen Biaya)</span>
+                  <span className="text-slate-400">Tarif BKJ Bulanan (Manajemen Biaya)</span>
                   <span className="font-bold text-white font-mono">{formatRupiah(getSppTarifFromBiayaList())} / bln</span>
                 </div>
                 <div className="flex justify-between text-xs">
@@ -577,7 +577,7 @@ export default function PaymentView({
                   onChange={(e) => setJenisPembayaran(e.target.value as any)}
                   className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 text-white font-semibold rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                 >
-                  <option value="SPP" className="bg-slate-900 border-none select-none text-white">SPP (Sumbangan Pembinaan Pendidikan)</option>
+                  <option value="BKJ" className="bg-slate-900 border-none select-none text-white">BKJ (Biaya Kompetensi Jurusan)</option>
                   <option value="Uang Gedung" className="bg-slate-900 border-none select-none text-white">Uang Gedung / Pangkal</option>
                   <option value="Seragam" className="bg-slate-900 border-none select-none text-white">Seragam Sekolah</option>
                   <option value="Kegiatan" className="bg-slate-900 border-none select-none text-white">Kegiatan / Program Sekolah</option>
@@ -585,9 +585,9 @@ export default function PaymentView({
                 </select>
               </div>
 
-              {jenisPembayaran === "SPP" ? (
+              {jenisPembayaran === "BKJ" ? (
                 <div className="space-y-1.5 animate-fade-in text-left">
-                  <label className="text-xs font-semibold text-slate-300">SPP Bulan & Tahun Pelajaran</label>
+                  <label className="text-xs font-semibold text-slate-300">BKJ Bulan & Tahun Pelajaran</label>
                   <div className="grid grid-cols-2 gap-2">
                     {/* Month Select */}
                     <div className="space-y-1">
@@ -608,7 +608,7 @@ export default function PaymentView({
                           setBulanCovered(nextVal);
                           
                           const mName = NAMA_BULAN.find(nb => nb.key === selectMonth)?.label || "";
-                          setKeterangan(`Pembayaran SPP Bulan ${mName} (Th Pelajaran ${selectedTahunPelajaran})`);
+                          setKeterangan(`Pembayaran BKJ Bulan ${mName} (Th Pelajaran ${selectedTahunPelajaran})`);
                           
                           // Set SPP amount automatically from school fees definition
                           const sppTarif = getSppTarifFromBiayaList();
@@ -714,7 +714,7 @@ export default function PaymentView({
                   {/* Multi-month list visualizer badges */}
                   {selectedMonthsList.length > 0 && (
                     <div className="mt-2.5 space-y-1 animate-fade-in">
-                      <span className="text-[10px] uppercase font-bold text-slate-450 block">Daftar Bulan SPP Digabungkan ({selectedMonthsList.length} bulan):</span>
+                      <span className="text-[10px] uppercase font-bold text-slate-450 block">Daftar Bulan BKJ Digabungkan ({selectedMonthsList.length} bulan):</span>
                       <div className="flex flex-wrap gap-1.5">
                         {selectedMonthsList.map((key) => {
                           const tpMonths = getMonthsForAcademicYear(selectedTahunPelajaran);
@@ -733,11 +733,11 @@ export default function PaymentView({
                                   setJumlah(sppTarif * nextList.length);
                                   if (nextList.length === 1) {
                                     const mLabel = tpMonths.find(d => d.key === nextList[0])?.label || "";
-                                    setKeterangan(`Pembayaran SPP Bulan ${mLabel} (Th Pelajaran ${selectedTahunPelajaran})`);
+                                    setKeterangan(`Pembayaran BKJ Bulan ${mLabel} (Th Pelajaran ${selectedTahunPelajaran})`);
                                   } else if (nextList.length > 1) {
                                     const labels = nextList.map(k => tpMonths.find(d => d.key === k)?.label.split(" ")[0] || "").join(", ");
                                     const years = Array.from(new Set(nextList.map(k => k.split("-")[0])));
-                                    setKeterangan(`Pembayaran SPP Gabungan ${nextList.length} Bulan (${labels}) Th Pelajaran ${selectedTahunPelajaran}`);
+                                    setKeterangan(`Pembayaran BKJ Gabungan ${nextList.length} Bulan (${labels}) Th Pelajaran ${selectedTahunPelajaran}`);
                                   } else {
                                     setKeterangan("");
                                   }
@@ -993,7 +993,7 @@ export default function PaymentView({
                   disabled={!selectedSiswa}
                   value={keterangan}
                   onChange={(e) => setKeterangan(e.target.value)}
-                  placeholder="Contoh: Lunas SPP Mei 2026 atau Lunas Paket Seragam"
+                  placeholder="Contoh: Lunas BKJ Mei 2026 atau Lunas Paket Seragam"
                   className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 animate-fade-in"
                 />
               </div>
@@ -1077,7 +1077,7 @@ export default function PaymentView({
                   </div>
                   {pendingTransaction.bulanCovered && (
                     <div className="text-right">
-                      <span className="text-[10px] uppercase font-bold text-slate-500 block">SPP Bulan</span>
+                      <span className="text-[10px] uppercase font-bold text-slate-500 block">BKJ Bulan</span>
                       <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/30">
                         {formatBulanIndo(pendingTransaction.bulanCovered)}
                       </span>
