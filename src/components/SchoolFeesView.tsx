@@ -40,7 +40,7 @@ export default function SchoolFeesView({
   // Form states
   const [formId, setFormId] = useState("");
   const [formNama, setFormNama] = useState("");
-  const [formKategori, setFormKategori] = useState<'SPP' | 'Uang Gedung' | 'Seragam' | 'Kegiatan' | 'Lainnya'>('SPP');
+  const [formKategori, setFormKategori] = useState<'BKJ' | 'Uang Gedung' | 'Seragam' | 'Kegiatan' | 'Lainnya'>('BKJ');
   const [formJumlah, setFormJumlah] = useState<number>(0);
   const [formTenggat, setFormTenggat] = useState("");
 
@@ -48,7 +48,7 @@ export default function SchoolFeesView({
     setModalMode('add');
     setFormId("");
     setFormNama("");
-    setFormKategori('SPP');
+    setFormKategori('BKJ');
     setFormJumlah(150000);
     // Default tenggat to next month
     const nextMonth = new Date();
